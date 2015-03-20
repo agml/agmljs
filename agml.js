@@ -27,7 +27,7 @@ agml.parse=function(text,results,options){
       if(/:/.test(line)){
         var key,val;
         // extract the key, assign the remainder to the value
-        val=x.replace(/.*?:/,function(k){
+        val=line.replace(/.*?:/,function(k){
           // but don't keep the colon
           key=k.slice(0,-1);
           return '';
