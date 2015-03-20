@@ -55,6 +55,7 @@ agml.head=function(text,results,options){
     results.push(head.slice(3,-3));
     return '';
   });
+  return results;
 };
 
 module.exports=agml;
