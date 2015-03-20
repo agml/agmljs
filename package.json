@@ -1,0 +1,26 @@
+{
+  "name": "agml",
+  "version": "1.0.0",
+  "description": "ansuz' ghetto markup language",
+  "main": "agml.js",
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agml/agmljs.git"
+  },
+  "keywords": [
+    "agml",
+    "ansuz",
+    "ghetto",
+    "markup",
+    "language"
+  ],
+  "author": "ansuz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/agml/agmljs/issues"
+  },
+  "homepage": "https://github.com/agml/agmljs"
+}
