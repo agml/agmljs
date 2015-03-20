@@ -36,3 +36,14 @@ this is a comment too, since there's no colon
 
 */}.toString().slice(14,-3);
 ```
+
+## Huh?
+
+That will yield the following:
+
+```agml
+{
+  "a key": "a value",
+  "another key": "another value"
+}
+```
