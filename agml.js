@@ -40,6 +40,14 @@ agml.parse=function(text,results,options){
   return results;
 };
 
+agml.encode=function(dict,options){
+  options=options||{};
+  return Object.keys(dict)
+    .map(function(key){
+      return key+':'+dict[key];
+    }).join('\n');
+};
+
 /*
   agml.head has the same signature as agml.parse
 
