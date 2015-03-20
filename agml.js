@@ -5,6 +5,7 @@ var agml={};
     a string to parse
     an object in which results will be accumulated
     another object in which options can be passed
+      and returns an object or results
 */
 
 agml.parse=function(text,results,options){
@@ -40,6 +41,11 @@ agml.parse=function(text,results,options){
   return results;
 };
 
+/*
+  agml.encode takes a dictionary, and an object of options
+    and returns a string
+*/
+
 agml.encode=function(dict,options){
   options=options||{};
   return Object.keys(dict)
@@ -49,9 +55,10 @@ agml.encode=function(dict,options){
 };
 
 /*
-  agml.head has the same signature as agml.parse
-
+  agml.head takes a string, a results object, and an options object
+    and returns an array
 */
+
 agml.head=function(text,results,options){
   /*
       parse a section of text
