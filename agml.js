@@ -1,5 +1,11 @@
 var agml={
-  results:[]  
+  results:[],
+  block:'-',
+  trail:';',
+  delim:':',
+  replace:true,
+  firstOnly:false,
+  separator:'\n'
 };
 
 /*
@@ -21,22 +27,28 @@ agml.parse=function(text,results,opt){
 
   results=results||agml.results; 
   opt=opt||{};
-  var delim=opt.delim||':';
-  var trail=opt.trail||';';
-  var block=opt.block||'-';
-  var replace=opt.replace||true;
+  var delim=opt.delim||agml.delim;
+  var trail=opt.trail||agml.trail;
+  var block=opt.block||agml.block;
+  var replace=opt.replace||agml.replace;
+  var separator=opt.separator||agml.separator;
+
+  // if opt.firstOnly has any truthy value
+  // the agmlBlock regex will only grab the first block
+  // otherwise it will grab all blocks
+  var blockFlags=opt.firstOnly?'m':'mg';
 
   var leadingComment=new RegExp('^\\s*'+delim);
   var keyPattern=new RegExp('.*?'+delim);
   var trailingComment=new RegExp(trail+'.*$');
-  var agmlBlock= new RegExp('\\'+block+'{3}(.|\s|\n)+?\\'+block+'{3}','mg');
+  var agmlBlock= new RegExp('\\'+block+'{3}(.|\s|\n)+?\\'+block+'{3}',blockFlags);
 
   var toJSON=function(AGML){
     var temp={};
 
     // split into individual lines
     // agml can't split key-value pairs across lines
-    AGML.split('\n')
+    AGML.split(separator) // defaults to '\n' (newline)
       // throw away empty lines, or lines with whitespace as keys
       .filter(function(line){
         return (!line || leadingComment.test(line))?false:true;
@@ -99,11 +111,13 @@ agml.parse=function(text,results,opt){
 
 agml.encode=function(dict,opt){
   opt=opt||{};
-  opt.delim=opt.delim||':'; 
+  var delim=opt.delim||agml.delim;
+  var separator=opt.separator||agml.separator; \\ \n
+
   return Object.keys(dict)
     .map(function(key){
       return key+opt.delim+dict[key];
-    }).join('\n');
+    }).join(separator);
 };
 
 module.exports=agml;
