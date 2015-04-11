@@ -112,7 +112,7 @@ agml.parse=function(text,results,opt){
 agml.encode=function(dict,opt){
   opt=opt||{};
   var delim=opt.delim||agml.delim;
-  var separator=opt.separator||agml.separator; \\ \n
+  var separator=opt.separator||agml.separator; // \n
 
   return Object.keys(dict)
     .map(function(key){
