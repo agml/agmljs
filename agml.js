@@ -149,4 +149,5 @@ agml.encode=function(blocks,opt){
   });
 };
 
-module.exports=agml;
+if(typeof module !== 'undefined')
+  module.exports=agml;
