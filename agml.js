@@ -5,19 +5,25 @@ var agml={
   delim:':',
   replace:true,
   firstOnly:false,
-  separator:'\n'
+  separator:'\n',
+  destructive:true
 };
 
 /*
   agml parse takes three arguments
-    a string to parse
-    an object in which results will be accumulated
-    another object in which options can be passed
-      and returns an object or results
+    a source string
+    a results array
+    an options object
+
+    it returns the original source string, minus any blocks of delimited AGML
 
     the options object can include:
-      an alternative key-value delimiter
-      an alternative trailing comment character
+      an alternative key-value delimiter, (agml.delim)
+      an alternative trailing comment character (agml.trail)
+      an alternative character for AGML blocks (agml.block)
+      an alternative string which should be used to delimit lines (agml.separator)
+      a flag which indicates whether to replace blocks of AGML (agml.replace)
+      a flag which indicates whether the parser should destroy or preserve duplicate keys (agml.destructive)
 */
 
 agml.parse=function(text,results,opt){
@@ -32,6 +38,9 @@ agml.parse=function(text,results,opt){
   var block=opt.block||agml.block;
   var replace=opt.replace||agml.replace;
   var separator=opt.separator||agml.separator;
+  var destructive=(typeof opt.destructive === 'undefined')?
+    agml.destructive:
+    opt.destructive;
 
   // if opt.firstOnly has any truthy value
   // the agmlBlock regex will only grab the first block
@@ -66,7 +75,22 @@ agml.parse=function(text,results,opt){
             // also, throw away anything after a semicolon
           }).replace(trailingComment,'');
           // add your results to a dictionary
-          temp[key.trim()]=val.trim();
+          // first check if you're in destructive mode
+          if(destructive){
+            // insert the value into the dictionary
+            // and overwrite any previous values
+            temp[key.trim()]=val.trim();
+          }else{
+            // in non-destructive mode, all values are arrays of strings
+            // cache the key
+            key=key.trim();
+            if(!temp[key]){
+              // initialize the array if not exists
+              temp[key]=[];
+            }
+            // push the new value to the array
+            temp[key].push(val.trim());
+          }
         }
       });
     results.push(temp);
@@ -109,15 +133,20 @@ agml.parse=function(text,results,opt){
     instead of the default colon
 */
 
-agml.encode=function(dict,opt){
+agml.encode=function(blocks,opt){
   opt=opt||{};
   var delim=opt.delim||agml.delim;
-  var separator=opt.separator||agml.separator; // \n
+  var s=opt.separator||agml.separator; // \n
+  var b=opt.block||agml.block;
+  b+=(b+b+s+s);
 
-  return Object.keys(dict)
-    .map(function(key){
-      return key+opt.delim+dict[key];
-    }).join(separator);
+  return agmlBlocks.map(function(agmlBlock){
+    return b+
+      Object.keys(agmlBlock)
+        .map(function(key){
+          return key+delim+agmlBlock[key];
+        }).join(s)+b;
+  });
 };
 
 module.exports=agml;
