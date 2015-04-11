@@ -18,11 +18,8 @@ this is a comment
 
 ;   pew pew pew
 
-
-
 */}.toString().slice(14,-3);
 
+agml.parse(text);
 
-var results=agml.parse(text);
-
-console.log(results);
+console.log(JSON.stringify(agml.results,undefined,2));
