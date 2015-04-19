@@ -133,19 +133,19 @@ agml.parse=function(text,results,opt){
     instead of the default colon
 */
 
-agml.encode=function(blocks,opt){
+agml.encode=function(agmlBlocks,opt){
   opt=opt||{};
   var delim=opt.delim||agml.delim;
   var s=opt.separator||agml.separator; // \n
   var b=opt.block||agml.block;
-  b+=(b+b+s+s);
+  b+=(b+b+s);
 
   return agmlBlocks.map(function(agmlBlock){
     return b+
       Object.keys(agmlBlock)
         .map(function(key){
           return key+delim+agmlBlock[key];
-        }).join(s)+b;
+        }).join(s)+s+b;
   });
 };
 
