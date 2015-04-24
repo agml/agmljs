@@ -133,20 +133,57 @@ agml.parse=function(text,results,opt){
     instead of the default colon
 */
 
+/*
+  agml needs to be able to encode based on the following properties
+
+  var agml={
+    block:'-',
+    replace:true,
+    firstOnly:false,
+    destructive:true
+  };
+
+*/
+
+
 agml.encode=function(agmlBlocks,opt){
   opt=opt||{};
+  var agmlBlocks=agmlBlocks||agml.results;
   var delim=opt.delim||agml.delim;
   var s=opt.separator||agml.separator; // \n
   var b=opt.block||agml.block;
+
+  var destructive=opt.destructive||agml.destructive;
+
   b+=(b+b+s);
 
   return agmlBlocks.map(function(agmlBlock){
+    if(destructive){
     return b+
       Object.keys(agmlBlock)
         .map(function(key){
           return key+delim+agmlBlock[key];
         }).join(s)+s+b;
-  });
+    }else{
+      return b+(
+        Object.keys(agmlBlock)
+          .map(function(key){
+            return agmlBlock[key]
+              .map(function(value,i){
+                return {
+                  key:key,
+                  value:value
+                };
+              });
+          })
+          .reduce(function(a,b){
+            return a.concat(b);
+          })
+          .map(function(line){
+            return line.key+delim+line.value;
+          }).join(s))+s+b;
+    }
+  })[0]
 };
 
 if(typeof module !== 'undefined')
