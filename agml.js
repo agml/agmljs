@@ -105,7 +105,8 @@ agml.parse=function(text,results,opt){
 
       // parse out the content of the blocks
       var tempText=text.replace(agmlBlock,function(block){
-        temp.push(block.slice(3,-3));  
+        temp.push(block.slice(3,-3));
+        return '';
       });
 
       // call 'toJSON' on each block
@@ -123,6 +124,7 @@ agml.parse=function(text,results,opt){
     // don't do anything to the source text
     toJSON(text);
   }
+  return text;
 };
 
 /*
