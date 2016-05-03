@@ -1,6 +1,6 @@
 {
   "name": "agml",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "ansuz' ghetto markup language",
   "main": "agml.js",
   "scripts": {
