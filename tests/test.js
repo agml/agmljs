@@ -1,4 +1,4 @@
-var agml=require("./agml");
+var agml=require("../agml");
 
 var text=function(){/*
 
