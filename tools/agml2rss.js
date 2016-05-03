@@ -31,7 +31,7 @@ rss.makeTag=function(type,content,indent){
         outertabs+='\t';
     }
 
-    return swap(outertabs+'<{type}>\n{innertabs}{content}\n'+outertabs+'</{type}>',{
+    return swap(outertabs+'<{type}>\n{content}\n'+outertabs+'</{type}>',{
         type:type,
         content:Object.keys(content)
         .map(function(key){
